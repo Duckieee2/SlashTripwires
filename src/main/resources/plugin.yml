@@ -1,0 +1,12 @@
+name: SlashTripwires
+description: $description
+version: '${version}'
+
+main: dev.duckiee2.Main
+api-version: '1.21.11'
+load: STARTUP
+
+authors: [ Duckiee2 ]
+
+commands:
+  tripwire:
