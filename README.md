@@ -14,10 +14,10 @@ Very simple paper plugin
 
 1. Clone / Download the git
 2. Build it:
-  ```
+```
   # Windows
   gradlew.bat build
   # If doesnt work use below for powershell
   # Linux/Mac
   ./gradlew build
-  ```
+ ```
