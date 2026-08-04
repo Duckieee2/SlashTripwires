@@ -7,7 +7,7 @@ Very simple paper plugin
 
 # Requirements:
 - Java 21
-- Paper 1.21.11 server (change api-version in paper.yml when building for less)
+- Paper 1.21 server (change api-version in paper.yml when building for less)
 - Gradle
 
 # Setup
