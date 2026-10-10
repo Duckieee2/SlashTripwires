@@ -17,11 +17,11 @@ import java.util.UUID;
 
 public final class Main extends JavaPlugin {
 
-    private static final int CD_DURA = 30; // pretty obvious but change that for longer/shorter cd
     private final Map<UUID, Long> cooldowns = new HashMap<>();
 
     @Override
     public void onEnable() {
+        saveDefaultConfig();
         printBanner(); // my kewl banner again
     }
 
@@ -47,6 +47,28 @@ public final class Main extends JavaPlugin {
 
     @Override
     public boolean onCommand(@NonNull CommandSender sender, Command command, @NonNull String label, String @NonNull [] args) { // annotated so no no yellow text appears
+
+        if (command.getName().equalsIgnoreCase("tripwirereload")) {
+            if (!(sender.isOp())) {
+                sender.sendMessage(Component.text(
+                        "You must be an operator to use this command.",
+                        NamedTextColor.RED
+                ));
+                return true;
+            }
+
+            reloadConfig();
+
+            sender.sendMessage(Component.text(
+                    "Tripwire configuration reloaded! Cooldown: "
+                            + getConfig().getInt("tripwire-cooldown", 30) + "s",
+                    NamedTextColor.GREEN
+            ));
+
+            return true;
+        }
+
+        int cdDura = getConfig().getInt("tripwire-cooldown", 30);
         if (!command.getName().equalsIgnoreCase("tripwire")) return false;
         if (!(sender instanceof Player player)) {
             sender.sendMessage(Component.text("ʏᴏᴜ ᴄᴀɴɴᴏᴛ ʀᴜɴ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴀs ʏᴏᴜ ᴀʀᴇɴ'ᴛ ᴀ ᴘʟᴀʏᴇʀ.", NamedTextColor.RED));return true;
@@ -65,7 +87,7 @@ public final class Main extends JavaPlugin {
             );return true; // i wannan make less lines yk
         }
 
-        cooldowns.put(uuid, System.currentTimeMillis() + (CD_DURA * 1000L));
+        cooldowns.put(uuid, System.currentTimeMillis() + (cdDura * 1000L));
         int amount = fillInventory(player);
         player.sendMessage(
                 Component.text("ʏᴏᴜ ʜᴀᴠᴇ ʀᴇᴄɪᴇᴠᴇᴅ ", NamedTextColor.GREEN)
@@ -74,7 +96,7 @@ public final class Main extends JavaPlugin {
         );
         player.sendMessage(
                 Component.text("ᴄᴏᴏʟᴅᴏᴡɴ: ", NamedTextColor.GRAY)
-                        .append(Component.text(CD_DURA + "s", NamedTextColor.GOLD))
+                        .append(Component.text(cdDura + "s", NamedTextColor.GOLD))
         );return true; // too lazy to repeat this
     }
 
